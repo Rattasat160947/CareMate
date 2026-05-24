@@ -13,8 +13,6 @@ dist
 dist-ssr
 coverage
 *.local
-package.json
-package-lock.json
 
 
 # Editor directories and files
