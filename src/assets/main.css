@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import 'tailwindcss';
+
+:root {
+  /* Core Clinical Palette */
+  --c-navy: #0a1628;
+  --c-navy-mid: #0f2044;
+  --c-navy-light: #1a3260;
+  --c-panel: #0d1f3c;
+  --c-surface: #112040;
+  --c-border: #1e3a6e;
+  --c-border-dim: #162d55;
+
+  /* Clinical Accent */
+  --c-cyan: #00c8e0;
+  --c-cyan-dim: #0097aa;
+  --c-blue: #2563eb;
+
+  /* Status */
+  --c-normal: #10b981;
+  --c-normal-bg: #052e1a;
+  --c-warn: #f59e0b;
+  --c-warn-bg: #2d1e04;
+  --c-alert: #ef4444;
+  --c-alert-bg: #2d0808;
+
+  /* Text */
+  --c-text-primary: #e8f0fe;
+  --c-text-secondary: #8fadd4;
+  --c-text-dim: #4d6fa0;
+
+  /* Typography */
+  --font-ui: 'IBM Plex Sans Thai', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: var(--c-navy);
+  color: var(--c-text-primary);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Clinical Panel */
+.med-panel {
+  background: var(--c-panel);
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+}
+
+.med-panel-raised {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Vital Display Values */
+.vital-value {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* Pulse animation for live data */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.85);
+  }
+}
+.live-indicator {
+  animation: pulse-dot 1.4s ease-in-out infinite;
+}
+
+/* Status badge glow */
+@keyframes glow-normal {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.7);
+  }
+}
+@keyframes glow-alert {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.9);
+  }
+}
+
+.status-normal {
+  animation: glow-normal 2s ease-in-out infinite;
+}
+.status-alert {
+  animation: glow-alert 1s ease-in-out infinite;
+}
+
+/* Clinical Button */
+.btn-clinical {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+.btn-clinical::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background 0.15s;
+}
+.btn-clinical:hover::after {
+  background: rgba(255, 255, 255, 0.06);
+}
+.btn-clinical:active::after {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.btn-primary {
+  background: var(--c-blue);
+  color: #fff;
+}
+.btn-confirm {
+  background: var(--c-normal);
+  color: #fff;
+}
+.btn-secondary {
+  background: var(--c-navy-light);
+  color: var(--c-text-primary);
+  border: 1px solid var(--c-border);
+}
+.btn-clinical:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Keyboard Keys */
+.key-cap {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-bottom: 3px solid var(--c-border-dim);
+  color: var(--c-text-primary);
+  font-family: var(--font-ui);
+  border-radius: 5px;
+  transition: all 0.1s;
+  cursor: pointer;
+}
+.key-cap:hover {
+  background: var(--c-navy-light);
+  border-color: var(--c-cyan-dim);
+  color: var(--c-cyan);
+}
+.key-cap:active {
+  border-bottom-width: 1px;
+  transform: translateY(2px);
+}
+
+/* Scanline overlay (subtle medical monitor feel) */
+.scanline::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 0, 0, 0.04) 3px,
+    rgba(0, 0, 0, 0.04) 4px
+  );
+  z-index: 9999;
+}
+
+/* Input field */
+.med-input {
+  background: var(--c-navy);
+  border: 1px solid var(--c-border);
+  border-bottom: 2px solid var(--c-cyan-dim);
+  color: var(--c-text-primary);
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  letter-spacing: 0.05em;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  text-align: center;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.med-input:focus {
+  border-color: var(--c-cyan);
+  box-shadow: 0 0 0 2px rgba(0, 200, 224, 0.15);
+}
+
+/* Section label */
+.field-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-text-dim);
+}
