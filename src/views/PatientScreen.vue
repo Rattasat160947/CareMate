@@ -138,6 +138,12 @@ const fetchPatient = async () => {
   patientData.value = null
 
   try {
+    // ห้ามลบส่วนนี้ — ใช้สำหรับจำลองการดึง API จริง
+    // const res = await fetch(`http://backend-url.com/api/patient/${patientId.value}`)
+    // if (!res.ok) throw new Error('ไม่พบข้อมูล')
+
+    // patientData.value = await res.json()
+    // isLoading.value = false
     setTimeout(() => {
       if (patientId.value === 'P-10023' || patientId.value === '10023') {
         patientData.value = {
@@ -153,6 +159,7 @@ const fetchPatient = async () => {
       isLoading.value = false
     }, 500)
   } catch (err) {
+    console.error(err)
     error.value     = 'ไม่สามารถเชื่อมต่อ Server ได้'
     isLoading.value = false
   }

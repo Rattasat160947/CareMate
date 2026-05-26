@@ -185,6 +185,19 @@ const submitData = async () => {
   }
 
   try {
+    // ห้ามลบส่วนนี้ — ใช้สำหรับจำลองการส่งข้อมูลไปยัง API จริง
+    // const res = await fetch('http://backend-url.com/api/measurement', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(payload)
+    // })
+
+    // if (!res.ok) throw new Error('API Error')
+
+    // submitStatus.value = 'success'
+    // showPopup.value = true
+    // isSubmitting.value = false
+
     setTimeout(() => {
       if (Math.random() > 0.8) throw new Error('Mock Network Error')
       submitStatus.value = 'success'
@@ -192,6 +205,7 @@ const submitData = async () => {
       isSubmitting.value = false
     }, 1000)
   } catch (err) {
+    console.error(err)
     store.cacheSubmission(payload)
     submitStatus.value = 'error'
     showPopup.value    = true
