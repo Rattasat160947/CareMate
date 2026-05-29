@@ -3,7 +3,6 @@ import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { Activity, Battery, HeartHandshake, History, Volume2, VolumeX, Wifi } from 'lucide-vue-next'
 
 import ExaminerSelector from './components/ExaminerSelector.vue'
-import HistoryLogs from './components/HistoryLogs.vue'
 import MeasurementSteps from './components/MeasurementSteps.vue'
 import PatientSelector from './components/PatientSelector.vue'
 import ReceiptScreen from './components/ReceiptScreen.vue'
@@ -199,81 +198,20 @@ const toggleSettingsAudio = () => {
         <div
           class="w-10 h-10 bg-sky-500 rounded-2xl flex items-center justify-center text-white shadow-sm shadow-sky-400/20"
         >
-          <HeartHandshake class="w-6 h-6 animate-pulse" />
+          <HeartHandshake class="w-6 h-6" />
         </div>
         <div>
           <h1
             class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-1.5 leading-none"
           >
-            ระบบตรวจคัดกรอง อสม. Smart Monitor <span>TH</span>
+            เครื่องวัดสัญญาณชีพสำหรับผู้ดูแลและผู้สูงอายุ <span>CareMate</span>
           </h1>
-          <p class="text-[10px] text-slate-400 mt-1 font-sans">
-            โรงพยาบาลส่งเสริมสุขภาพตำบล (รพ.สต.) บ้านดอนกลาง • เขตภาคเหนือที่ 1
-          </p>
-        </div>
-      </div>
-
-      <div class="flex items-center gap-4 text-xs select-none">
-        <div class="flex items-center gap-1 text-emerald-500">
-          <Wifi class="w-4 h-4" />
-          <span class="font-semibold text-[10px] tracking-wider font-mono">5G CONNECTED</span>
-        </div>
-        <div class="flex items-center gap-1 text-slate-500 dark:text-slate-400">
-          <Battery class="w-4.5 h-4.5" />
-          <span class="font-bold text-[10px] font-mono">100%</span>
-        </div>
-        <div class="w-px h-5 bg-slate-200 dark:bg-slate-800" />
-        <button
-          id="btn-quick-sound-toggle"
-          @click="toggleSettingsAudio"
-          :title="
-            audioFeedback ? 'กดเพื่อปิดเสียงปิ๊บสัมผัสปุ่ม' : 'กดเพื่อเปิดเสียงปิ๊บสัมผัสปุ่ม'
-          "
-          class="p-2 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all cursor-pointer"
-        >
-          <Volume2 v-if="audioFeedback" class="w-4 h-4 text-sky-500" />
-          <VolumeX v-else class="w-4 h-4 text-slate-400" />
-        </button>
-        <div
-          class="bg-slate-900/5 dark:bg-white/5 border border-slate-200/50 dark:border-slate-800 rounded-xl px-3.5 py-1.5 font-mono text-xs font-bold text-slate-750 dark:text-slate-300"
-        >
-          {{ currentTime || '--:--:--' }}
+          <p class="text-[10px] text-slate-400 mt-1 font-sans"></p>
         </div>
       </div>
     </header>
 
     <main class="grow max-w-7xl w-full mx-auto px-6 py-6 transition-all duration-300">
-      <div
-        class="flex gap-2.5 mb-7 bg-white dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200/80 dark:border-slate-850 shadow-xs max-w-sm mx-auto select-none"
-      >
-        <button
-          id="tab-triage-station"
-          @click="handleTabSwitch('triage')"
-          :class="[
-            'flex-1 py-3 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer',
-            activeTab === 'triage'
-              ? 'bg-sky-500 text-white shadow-sm'
-              : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-950/40',
-          ]"
-        >
-          <Activity class="w-4 h-4" />
-          ทำการตรวจวัด
-        </button>
-        <button
-          id="tab-history-logs"
-          @click="handleTabSwitch('history')"
-          :class="[
-            'flex-1 py-3 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer',
-            activeTab === 'history'
-              ? 'bg-sky-500 text-white shadow-sm'
-              : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-950/40',
-          ]"
-        >
-          <History class="w-4 h-4" />
-          รายการตรวจทั้งหมด
-        </button>
-      </div>
-
       <div class="animate-fade-in duration-300">
         <template v-if="activeTab === 'triage'">
           <ExaminerSelector

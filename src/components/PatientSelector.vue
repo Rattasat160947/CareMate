@@ -188,16 +188,6 @@ const handleKeypadDelete = () => {
       class="lg:col-span-5 bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm flex flex-col justify-between"
     >
       <div>
-        <div class="mb-4">
-          <h3
-            class="font-semibold text-slate-800 dark:text-white text-xs text-center uppercase tracking-wider mb-1"
-          >
-            แผงแป้นตัวเลขสัมผัส (Touch Numeric Keypad)
-          </h3>
-          <p class="text-[10px] text-slate-500 text-center">
-            ออกแบบรองรับการใช้งานบนหน้าจอสัมผัสติดหัวเตียง หรือแท็บเล็ต อสม.
-          </p>
-        </div>
 
         <div
           class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 text-center mb-4"
@@ -247,16 +237,6 @@ const handleKeypadDelete = () => {
             <Delete class="w-5 h-5" />
           </button>
         </div>
-      </div>
-
-      <div
-        class="bg-sky-50/50 dark:bg-sky-950/25 border border-sky-100/50 dark:border-sky-900/30 rounded-2xl p-4 text-[11px] text-slate-500 dark:text-slate-400 mt-4 leading-relaxed"
-      >
-        <p class="font-semibold text-sky-800 dark:text-sky-400 mb-1 flex items-center gap-1.5">
-          <Plus class="w-3.5 h-3.5" />คำแนะนำสำหรับ อสม.
-        </p>
-        แตะเลือกคนไข้จากรายชื่อในฐาน แล้วป้อนรหัส ID ด้วยปุ่มสัมผัสขนาดใหญ่ด้านบน เพื่อความสะดวก
-        รวดเร็ว และลดความผิดพลาดในการกรอกข้อมูล
       </div>
     </div>
   </div>

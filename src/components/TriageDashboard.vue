@@ -292,7 +292,7 @@ onUnmounted(() => {
             <div class="flex items-center gap-2">
               <span
                 :class="[
-                  'w-2.5 h-2.5 rounded-full animate-ping',
+                  'w-2.5 h-2.5 rounded-full',
                   overallGrade === 'ALERT'
                     ? 'bg-red-500'
                     : overallGrade === 'WARNING'
