@@ -115,7 +115,7 @@
     >
       <div>
         <div class="mb-4">
-          
+
           <p class="text-[10px] text-slate-500 text-center">
             ออกแบบรองรับการยืนยันตัวตนด้วยรหัสส่วนตัวหรือค้นเลขประจำตัว
           </p>
@@ -125,7 +125,7 @@
           class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 text-center mb-4"
         >
           <p class="text-[10px] text-slate-400 uppercase tracking-widest font-mono mb-1">
-            ตัวเลขรหัสค้นหาด่วน
+            รหัสผู้ตรวจ
           </p>
           <p
             class="text-xl font-mono font-bold tracking-wider text-slate-800 dark:text-slate-100 min-h-7"
@@ -181,7 +181,6 @@ import { ref, computed } from 'vue'
 import { ArrowRight, Delete, Search, ShieldAlert, UserCheck } from 'lucide-vue-next'
 import { mockExaminers } from '../data/patients'
 import type { Examiner } from '../types'
-import { playTapSound } from '../utils/audio'
 
 defineProps<{
   accentColor?: string
@@ -204,12 +203,10 @@ const filteredExaminers = computed(() => {
 })
 
 const handleSelectExaminer = (id: string) => {
-  playTapSound()
   selectedExaminerId.value = id
 }
 
 const handleProceed = () => {
-  playTapSound()
   const selected = mockExaminers.find((examiner) => examiner.id === selectedExaminerId.value)
   if (selected) {
     emit('select', selected)
@@ -217,19 +214,16 @@ const handleProceed = () => {
 }
 
 const handleKeypadPress = (value: string) => {
-  playTapSound()
   if (searchText.value.length < 13) {
     searchText.value += value
   }
 }
 
 const handleKeypadDelete = () => {
-  playTapSound()
   searchText.value = searchText.value.slice(0, -1)
 }
 
 const clearSearchText = () => {
-  playTapSound()
   searchText.value = ''
 }
 </script>

@@ -2,7 +2,6 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { ArrowRight, FileText, Printer, ShieldCheck } from 'lucide-vue-next'
 import type { Patient, VitalRecord } from '../types'
-import { playSuccessSound, playTapSound } from '../utils/audio'
 
 interface ReceiptScreenProps {
   patient: Patient
@@ -21,7 +20,7 @@ onMounted(() => {
   timer = setTimeout(() => {
     isSending.value = false
     sendSuccess.value = true
-    playSuccessSound()
+
   }, 1800)
 })
 
@@ -30,12 +29,10 @@ onUnmounted(() => {
 })
 
 const handleDone = () => {
-  playTapSound()
   props.onDone()
 }
 
 const handlePrint = () => {
-  playTapSound()
   alert('เครื่องพิมพ์สติกเกอร์เทอร์มอลไม่พ่วงเชื่อมต่อ (จำลองความต้องการใช้จริง)')
 }
 </script>

@@ -11,12 +11,6 @@ import {
   Thermometer,
 } from 'lucide-vue-next'
 import type { Patient } from '../types'
-import {
-  playHeartbeatSound,
-  playOximeterSound,
-  playSuccessSound,
-  playTapSound,
-} from '../utils/audio'
 
 const props = defineProps<{
   patient: Patient
@@ -76,11 +70,10 @@ watch([simState, step], () => {
           progress.value = 50 + Math.min(50, ((160 - currentPressure) / 100) * 50)
 
           if (currentPressure > 60 && currentPressure < 140 && currentPressure % 14 === 0) {
-            playHeartbeatSound(true)
+            // removed heart beat sound
           }
 
           if (currentPressure <= 60) {
-            playSuccessSound()
             systolic.value = Math.floor(Math.random() * 25) + 110
             diastolic.value = Math.floor(Math.random() * 15) + 70
             pulseRate.value = Math.floor(Math.random() * 15) + 65
@@ -103,12 +96,7 @@ watch([simState, step], () => {
         count += 2
         progress.value = count
 
-        if (count % 20 === 0) {
-          playOximeterSound(98)
-        }
-
         if (count >= 100) {
-          playSuccessSound()
           spo2.value = Math.floor(Math.random() * 4) + 96
           simState.value = 'done'
           completedTests.value.spo2 = true
@@ -125,11 +113,7 @@ watch([simState, step], () => {
       const runTemp = () => {
         count += 5
         progress.value = count
-        if (count % 25 === 0) {
-          playTapSound()
-        }
         if (count >= 100) {
-          playSuccessSound()
           temperature.value = parseFloat((Math.random() * 1.2 + 36.2).toFixed(1))
           simState.value = 'done'
           completedTests.value.temp = true
@@ -148,19 +132,16 @@ onUnmounted(() => {
 })
 
 const handleStartSimulation = () => {
-  playTapSound()
   simState.value = 'running'
 }
 
 const saveAndReturnToDashboard = () => {
-  playTapSound()
   step.value = 'dashboard'
   simState.value = 'idle'
   progress.value = 0
 }
 
 const handleProceedToSummary = () => {
-  playTapSound()
   emit('completed', {
     systolic: completedTests.value.bp ? systolic.value : null,
     diastolic: completedTests.value.bp ? diastolic.value : null,
@@ -209,7 +190,6 @@ const completedCount = computed(
             id="btn-back-to-selection"
             @click="
               () => {
-                playTapSound()
                 step = 'dashboard'
                 simState = 'idle'
               }
@@ -222,7 +202,6 @@ const completedCount = computed(
             id="btn-cancel-measurement"
             @click="
               () => {
-                playTapSound()
                 emit('cancel')
               }
             "
@@ -297,7 +276,6 @@ const completedCount = computed(
               id="btn-select-bp"
               @click="
                 () => {
-                  playTapSound()
                   step = 'bp'
                   simState = 'idle'
                   progress = 0
@@ -366,7 +344,6 @@ const completedCount = computed(
               id="btn-select-spo2"
               @click="
                 () => {
-                  playTapSound()
                   step = 'spo2'
                   simState = 'idle'
                   progress = 0
@@ -440,7 +417,6 @@ const completedCount = computed(
               id="btn-select-temp"
               @click="
                 () => {
-                  playTapSound()
                   step = 'temp'
                   simState = 'idle'
                   progress = 0

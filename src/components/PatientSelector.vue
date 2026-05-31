@@ -3,7 +3,6 @@ import { ref, computed } from 'vue'
 import { ArrowRight, Delete, Plus, Search, ShieldAlert, User } from 'lucide-vue-next'
 import { mockPatients } from '../data/patients'
 import type { Patient } from '../types'
-import { playTapSound } from '../utils/audio'
 
 const props = defineProps<{
   activeExaminerName?: string
@@ -16,7 +15,6 @@ const emit = defineEmits<{
 }>()
 
 const clearSearch = () => {
-  playTapSound()
   searchText.value = ''
 }
 
@@ -33,23 +31,19 @@ const filteredPatients = computed(() =>
 )
 
 const handleSelectPatient = (id: string) => {
-  playTapSound()
   selectedPatientId.value = id
 }
 
 const startMeasurement = () => {
-  playTapSound()
   const selected = mockPatients.find((patient) => patient.id === selectedPatientId.value)
   if (selected) emit('select', selected)
 }
 
 const handleKeypadPress = (value: string) => {
-  playTapSound()
   if (searchText.value.length < 13) searchText.value += value
 }
 
 const handleKeypadDelete = () => {
-  playTapSound()
   searchText.value = searchText.value.slice(0, -1)
 }
 </script>

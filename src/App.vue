@@ -9,12 +9,10 @@ import ReceiptScreen from './components/ReceiptScreen.vue'
 import TriageDashboard from './components/TriageDashboard.vue'
 
 import { initialHistory, mockPatients } from './data/patients'
-import { playTapSound, setAudioEnabled } from './utils/audio'
 import type { Examiner, Patient, StepperState, TriageCategory, VitalRecord } from './types'
 
 const activeTab = ref<'triage' | 'history'>('triage')
 const theme = ref<'light' | 'dark'>('light')
-const audioFeedback = ref(true)
 const records = ref<VitalRecord[]>(Array.isArray(initialHistory) ? [...initialHistory] : [])
 
 const stepper = ref<StepperState>({
@@ -172,15 +170,7 @@ const handleClearAllLogs = () => {
 }
 
 const handleTabSwitch = (tab: 'triage' | 'history') => {
-  playTapSound()
   activeTab.value = tab
-}
-
-const toggleSettingsAudio = () => {
-  playTapSound()
-  const nextVal = !audioFeedback.value
-  audioFeedback.value = nextVal
-  setAudioEnabled(nextVal)
 }
 </script>
 
@@ -226,7 +216,6 @@ const toggleSettingsAudio = () => {
             :activeExaminerName="stepper.activeExaminer?.name"
             @back="
               () => {
-                playTapSound()
                 stepper.currentStep = 'examiner'
                 stepper.activePatient = null
               }
