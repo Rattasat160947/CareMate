@@ -25,7 +25,6 @@ import { RouterView } from 'vue-router'
           >
             CAREMATE MONITOR
           </div>
-          <div class="field-label" style="font-size: 0.6rem;">VITAL SIGNS SYSTEM</div>
         </div>
       </div>
 

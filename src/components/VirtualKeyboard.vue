@@ -34,7 +34,7 @@
         </button>
         <button
           @click="emitKey(' ')"
-          class="key-cap font-medium py-3 px-6 text-lg grow"
+          class="key-cap font-medium py-3 px-5 text-lg grow"
           style="color: var(--c-text-dim)"
         >
           SPACE

@@ -3,9 +3,9 @@
     <!-- Header Bar -->
     <div class="med-panel flex items-center justify-between px-5 py-3">
       <div class="flex items-center gap-3">
-        <!-- Live dot -->
-        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 live-indicator" />
-        <span class="field-label" style="color: var(--c-cyan)">กำลังวัดสัญญาณชีพ</span>
+        <!-- Live dot (only show when measuring) -->
+        <span v-if="currentMeasureMode" class="w-2.5 h-2.5 rounded-full bg-emerald-400 live-indicator" />
+        <span class="field-label" style="color: var(--c-cyan)">{{ headerText }}</span>
       </div>
 
       <div v-if="patient" class="flex items-center gap-4">
@@ -26,97 +26,80 @@
       </div>
     </div>
 
-    <!-- Main Vitals Grid -->
-    <div class="grid grid-cols-2 gap-4 w-full">
-      <!-- Blood Pressure -->
-      <div
-        :class="[
-          'relative p-6 rounded-lg transition-all duration-300 flex flex-col justify-center items-center text-center',
-          isPressureAbnormal ? 'status-alert' : 'status-normal',
-        ]"
-        :style="{
-          background: isPressureAbnormal ? 'var(--c-alert-bg)' : 'var(--c-normal-bg)',
-          border: isPressureAbnormal
-            ? '1px solid rgba(239,68,68,0.6)'
-            : '1px solid rgba(16,185,129,0.3)',
-        }"
-      >
-        <div class="flex flex-col items-center justify-center w-full">
-          <div>
-            <div class="field-label mb-2 font-semibold">ความดันโลหิต (SYS / DIA)</div>
-            <div class="flex items-baseline justify-center gap-3">
-              <span v-if="isPressureAbnormal" class="text-red-400" style="font-size: 2rem">⚠</span>
-              <span
-                class="vital-value font-bold"
-                :class="isPressureAbnormal ? 'text-red-300' : 'text-emerald-300'"
-                style="font-size: 4rem"
-              >
-                {{ vitals.systolic }}
-              </span>
-              <span style="font-size: 2.5rem; color: var(--c-text-dim)">/</span>
-              <span
-                class="vital-value font-bold"
-                :class="isPressureAbnormal ? 'text-red-300' : 'text-emerald-300'"
-                style="font-size: 4rem"
-              >
-                {{ vitals.diastolic }}
-              </span>
-              <span
-                class="field-label ml-2 font-normal"
-                :style="{ color: isPressureAbnormal ? '#f87171' : '#34d399' }"
-                >mmHg</span
-              >
-            </div>
+    <!-- MAIN DASHBOARD -->
+    <div v-if="!currentMeasureMode" class="flex flex-col gap-6 w-full">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- BP & HR Card -->
+        <div class="med-panel p-6 flex flex-col gap-4 rounded-lg items-center text-center cursor-pointer transition-all border border-transparent hover:border-cyan-500"
+             @click="currentMeasureMode = 'bphr'" style="background: var(--c-navy-light)">
+          <div class="field-label text-xl font-semibold mb-2">ความดันโลหิต & อัตราการเต้นหัวใจ</div>
+          <div v-if="vitals.systolic > 0" class="text-emerald-300 font-bold" style="font-size: 2.5rem; line-height: 1.2;">
+            {{ vitals.systolic }}<span style="font-size: 1.5rem">/</span>{{ vitals.diastolic }}
+            <div class="text-sm font-normal" style="color: var(--c-text-dim)">mmHg</div>
+            <div class="mt-2">{{ vitals.heart_rate }} <span class="text-sm font-normal" style="color: var(--c-text-dim)">BPM</span></div>
           </div>
+          <div v-else class="text-gray-400 opacity-50 flex flex-col justify-center items-center h-full" style="font-size: 2.5rem; line-height: 1.2;">
+            -- / --
+          </div>
+          <button class="mt-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg w-full text-lg mt-4">เริ่มวัด</button>
         </div>
-        <div
-          :class="[
-            'absolute bottom-0 left-0 right-0 h-0.5 rounded-b-lg',
-            isPressureAbnormal ? 'bg-red-500' : 'bg-emerald-500',
-          ]"
-        />
+
+        <!-- SpO2 Card -->
+        <div class="med-panel p-6 flex flex-col gap-4 rounded-lg items-center text-center cursor-pointer transition-all border border-transparent hover:border-cyan-500"
+             @click="currentMeasureMode = 'spo2'" style="background: var(--c-navy-light)">
+          <div class="field-label text-xl font-semibold mb-2">ออกซิเจนในเลือด (SpO₂)</div>
+          <div v-if="vitals.spo2 > 0" class="text-emerald-300 font-bold flex flex-col justify-center items-center h-full" style="font-size: 3.5rem; line-height: 1.2;">
+            {{ vitals.spo2 }} <span class="text-sm font-normal" style="color: var(--c-text-dim)">%</span>
+          </div>
+          <div v-else class="text-gray-400 opacity-50 flex flex-col justify-center items-center h-full" style="font-size: 3.5rem; line-height: 1.2;">
+            --
+          </div>
+          <button class="mt-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg w-full text-lg mt-4">เริ่มวัด</button>
+        </div>
+
+        <!-- Temp Card -->
+        <div class="med-panel p-6 flex flex-col gap-4 rounded-lg items-center text-center cursor-pointer transition-all border border-transparent hover:border-cyan-500"
+             @click="currentMeasureMode = 'temp'" style="background: var(--c-navy-light)">
+          <div class="field-label text-xl font-semibold mb-2">อุณหภูมิร่างกาย</div>
+          <div v-if="vitals.temperature > 0" class="text-emerald-300 font-bold flex flex-col justify-center items-center h-full" style="font-size: 3.5rem; line-height: 1.2;">
+            {{ vitals.temperature }} <span class="text-sm font-normal" style="color: var(--c-text-dim)">°C</span>
+          </div>
+          <div v-else class="text-gray-400 opacity-50 flex flex-col justify-center items-center h-full" style="font-size: 3.5rem; line-height: 1.2;">
+            --
+          </div>
+          <button class="mt-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg w-full text-lg mt-4">เริ่มวัด</button>
+        </div>
       </div>
 
-      <!-- Heart Rate -->
-      <VitalCard
-        title="อัตราการเต้นหัวใจ"
-        :value="vitals.heart_rate"
-        unit="BPM"
-        :isAbnormal="vitals.heart_rate > 100 || (vitals.heart_rate < 60 && vitals.heart_rate > 0)"
-      />
-
-      <!-- SpO2 -->
-      <VitalCard
-        title="ออกซิเจนในเลือด (SpO₂)"
-        :value="vitals.spo2"
-        unit="%"
-        :isAbnormal="vitals.spo2 < 95 && vitals.spo2 > 0"
-      />
-
-      <!-- Temperature -->
-      <VitalCard
-        title="อุณหภูมิร่างกาย"
-        :value="vitals.temperature"
-        unit="°C"
-        :isAbnormal="vitals.temperature > 37.5 || vitals.temperature < 36.0"
-      />
+      <!-- Action Button -->
+      <!-- Only enable if at least one measurement is taken -->
+      <button
+        @click="finishMeasurement"
+        class="btn-clinical btn-confirm w-full py-5 text-2xl tracking-widest"
+        :disabled="!hasAnyMeasurement"
+        :style="{ opacity: hasAnyMeasurement ? 1 : 0.5, cursor: hasAnyMeasurement ? 'pointer' : 'not-allowed' }"
+      >
+        สรุปผล &amp; ถัดไป
+      </button>
     </div>
 
-    <!-- Action Button -->
-    <button
-      @click="finishMeasurement"
-      class="btn-clinical btn-confirm w-full py-5 text-2xl tracking-widest"
-    >
-      สรุปผล &amp; หยุดวัด
-    </button>
+    <!-- MEASUREMENT VIEWS -->
+    <div v-else class="w-full grow flex flex-col items-center justify-center">
+      <MeasureBpHr v-if="currentMeasureMode === 'bphr'" @confirm="onConfirmBpHr" @cancel="currentMeasureMode = null" />
+      <MeasureSpo2 v-if="currentMeasureMode === 'spo2'" @confirm="onConfirmSpo2" @cancel="currentMeasureMode = null" />
+      <MeasureTemp v-if="currentMeasureMode === 'temp'" @confirm="onConfirmTemp" @cancel="currentMeasureMode = null" />
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCareStore } from '@/stores/useCareStore'
-import VitalCard from '@/components/VitalCard.vue'
+import MeasureBpHr from '@/components/MeasureBpHr.vue'
+import MeasureSpo2 from '@/components/MeasureSpo2.vue'
+import MeasureTemp from '@/components/MeasureTemp.vue'
 
 const router = useRouter()
 const store = useCareStore()
@@ -127,52 +110,41 @@ const vitals = ref({
   diastolic: 0,
   heart_rate: 0,
   spo2: 0,
-  temperature: 36.0,
+  temperature: 0,
 })
 
-const currentTime = ref('')
-const currentDate = ref('')
+const currentMeasureMode = ref(null) // null | 'bphr' | 'spo2' | 'temp'
 
-let mockInterval
-let clockInterval
+const headerText = computed(() => {
+  if (currentMeasureMode.value === 'bphr') return 'กำลังวัดความดันและส่วนสูง'
+  if (currentMeasureMode.value === 'spo2') return 'กำลังวัดออกซิเจนในเลือด'
+  if (currentMeasureMode.value === 'temp') return 'กำลังวัดอุณหภูมิ'
+  return 'เลือกรายการที่ต้องการวัด'
+})
 
-const updateClock = () => {
-  const now = new Date()
-  currentTime.value = now.toLocaleTimeString('th-TH', {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-  })
-  currentDate.value = now.toLocaleDateString('th-TH', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
+const hasAnyMeasurement = computed(() => {
+  return vitals.value.systolic > 0 || vitals.value.spo2 > 0 || vitals.value.temperature > 0
+})
+
+const onConfirmBpHr = (data) => {
+  vitals.value.systolic = data.systolic
+  vitals.value.diastolic = data.diastolic
+  vitals.value.heart_rate = data.heart_rate
+  currentMeasureMode.value = null
 }
 
-onMounted(() => {
-  updateClock()
-  clockInterval = setInterval(updateClock, 1000)
+const onConfirmSpo2 = (data) => {
+  vitals.value.spo2 = data.spo2
+  currentMeasureMode.value = null
+}
 
-  mockInterval = setInterval(() => {
-    vitals.value.systolic = 110 + Math.floor(Math.random() * 20)
-    vitals.value.diastolic = 70 + Math.floor(Math.random() * 15)
-    vitals.value.heart_rate = 65 + Math.floor(Math.random() * 10)
-    vitals.value.spo2 = 96 + Math.floor(Math.random() * 4)
-    vitals.value.temperature = +(36.2 + Math.random() * 0.5).toFixed(1)
-  }, 1000)
-})
-
-onUnmounted(() => {
-  clearInterval(mockInterval)
-  clearInterval(clockInterval)
-})
-
-const isPressureAbnormal = computed(
-  () => vitals.value.systolic > 140 || vitals.value.diastolic > 90,
-)
+const onConfirmTemp = (data) => {
+  vitals.value.temperature = data.temperature
+  currentMeasureMode.value = null
+}
 
 const finishMeasurement = () => {
+  if (!hasAnyMeasurement.value) return
   store.setMeasurements(vitals.value)
   router.push('/summary')
 }
