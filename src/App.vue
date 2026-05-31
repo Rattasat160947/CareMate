@@ -29,14 +29,6 @@ import { RouterView } from 'vue-router'
         </div>
       </div>
 
-      <!-- Status pill -->
-      <div
-        class="flex items-center gap-2 px-3 py-1.5 rounded"
-        style="background: var(--c-panel); border: 1px solid var(--c-border);"
-      >
-        <span class="w-2 h-2 rounded-full bg-emerald-400 live-indicator" />
-        <span class="field-label" style="color: #34d399; font-size: 0.65rem;">SYSTEM ONLINE</span>
-      </div>
     </div>
 
     <!-- Main Content Card -->
@@ -50,11 +42,5 @@ import { RouterView } from 'vue-router'
     >
       <RouterView />
     </div>
-
-    <!-- Footer -->
-    <div class="mt-4 field-label" style="font-size: 0.6rem; opacity: 0.3;">
-      CareMate Medical Systems · Confidential Patient Data
-    </div>
-
   </div>
 </template>

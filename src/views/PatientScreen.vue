@@ -7,7 +7,6 @@
       <span class="font-semibold tracking-wider" style="color: var(--c-text-primary); font-size: 1.1rem;">
         ค้นหาข้อมูลผู้ป่วย
       </span>
-      <span class="field-label ml-auto">PATIENT LOOKUP</span>
     </div>
 
     <!-- Main content: numpad + patient panel -->

@@ -7,7 +7,6 @@
       <span class="font-semibold tracking-wider" style="color: var(--c-text-primary); font-size: 1.1rem;">
         ลงทะเบียนผู้ดูแล
       </span>
-      <span class="field-label ml-auto">OPERATOR REGISTRATION</span>
     </div>
 
     <!-- Input -->
